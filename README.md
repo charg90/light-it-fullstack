@@ -34,8 +34,8 @@ Antes de comenzar, asegurate de tener instalado:
 Cloná el repositorio principal:
 
 ```bash
-git clone https://github.com/charg90/light-it-chanllenge.git
-cd light-it-chanllenge
+git clone https://github.com/charg90/light-it-fullstack.git
+cd light-it-fullstack
 ```
 
 ---
