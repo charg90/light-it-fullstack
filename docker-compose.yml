@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: lightit-db
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "light-it-db"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: lightit-app
+    restart: always
+    environment:
+      MAILTRAP_USERNAME: "cef9d83fe7e662"
+      MAILTRAP_PASSWORD: "98e0d860ce6863"
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/light-it-db?schema=public"
+      PORT: "4000"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: lightit-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: "http://localhost:4000"
+      API_URL: "http://backend:4000"
+    command: sh -c "npm install && npm run build && npm run start"
+
+volumes:
+  pgdata:
